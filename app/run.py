@@ -42,7 +42,8 @@ def index():
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
-
+    
+    # adding plot 2
     categories = df.iloc[:, 4:]
     category_counts = categories.sum().sort_values(ascending=False)
     category_names = categories.columns.tolist()
