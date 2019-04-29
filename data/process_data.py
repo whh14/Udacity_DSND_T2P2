@@ -9,11 +9,11 @@ def load_data(messages_filepath, categories_filepath):
     Loading two csv files as pandas dataframe
 
     Args:
-        param1 (str): File path for message.csv file.
-        param2 (str): File path for categories.csv file.
+        messages_filepath: (str): File path for message.csv file.
+        categories_filepath (str): File path for categories.csv file.
 
     Returns:
-        df: dataframe merge both csv files.
+        df: pd.Dataframe, outputfile of the merged data.
 
     """
 
@@ -36,10 +36,10 @@ def clean_data(df):
     rename columns, convert column cell to 0 or 1 and drop duplicate rows.
 
     Args:
-        param1 (pd): raw input dataframe.
+        df: pd.DataFrame, raw input dataframe.
 
     Returns:
-        df: processed output dataframe.
+        df: pd.DataFrame, processed output dataframe.
 
     """
 
@@ -62,8 +62,8 @@ def clean_data(df):
         # set each value to be the last character of the string
         categories[column] = categories[column].str[-1]
 
-    # convert column from string to numeric
-    categories[column] = categories[column].astype(int)
+        # convert column from string to numeric
+        categories[column] = categories[column].astype(int)
 
     # drop the original categories column from `df`
     df.drop('categories', axis=1, inplace=True)
@@ -73,6 +73,8 @@ def clean_data(df):
 
     # drop duplicates
     df.drop_duplicates(inplace=True)
+    # replacing 2 in 'related' with 1.
+    df['related'].replace(2, 1, inplace=True)
 
     return df
 
@@ -83,10 +85,11 @@ def save_data(df, database_filename):
     Save dataframe into an sqlite database.
 
     Args:
-        param1 (pd): input Dataframe.
+        df: pd.DataFrame, input Dataframe.
+        database_filename: str, output file path
 
     Returns:
-        None.
+        None
 
     """
     engine = create_engine('sqlite:///' + database_filename)
